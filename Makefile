@@ -1,55 +1,57 @@
-# ----------------------------------
-#          INSTALL & TEST
-# ----------------------------------
-install_requirements:
-	@pip install -r requirements.txt
+# # ----------------------------------
+# #          INSTALL & TEST
+# # ----------------------------------
+include requirements.txt
 
-check_code:
-	@flake8 scripts/* website_water_pollution/*.py
+# install_requirements:
+# 	@pip install -r requirements.txt
 
-black:
-	@black scripts/* website_water_pollution/*.py
+# check_code:
+# 	@flake8 scripts/* website_water_pollution/*.py
 
-test:
-	@coverage run -m pytest tests/*.py
-	@coverage report -m --omit="${VIRTUAL_ENV}/lib/python*"
+# black:
+# 	@black scripts/* website_water_pollution/*.py
 
-ftest:
-	@Write me
+# test:
+# 	@coverage run -m pytest tests/*.py
+# 	@coverage report -m --omit="${VIRTUAL_ENV}/lib/python*"
 
-clean:
-	@rm -f */version.txt
-	@rm -f .coverage
-	@rm -fr */__pycache__ */*.pyc __pycache__
-	@rm -fr build dist
-	@rm -fr website_water_pollution-*.dist-info
-	@rm -fr website_water_pollution.egg-info
+# ftest:
+# 	@Write me
 
-install:
-	@pip install . -U
+# clean:
+# 	@rm -f */version.txt
+# 	@rm -f .coverage
+# 	@rm -fr */__pycache__ */*.pyc __pycache__
+# 	@rm -fr build dist
+# 	@rm -fr website_water_pollution-*.dist-info
+# 	@rm -fr website_water_pollution.egg-info
 
-all: clean install test black check_code
+# install:
+# 	@pip install . -U
 
-count_lines:
-	@find ./ -name '*.py' -exec  wc -l {} \; | sort -n| awk \
-        '{printf "%4s %s\n", $$1, $$2}{s+=$$0}END{print s}'
-	@echo ''
-	@find ./scripts -name '*-*' -exec  wc -l {} \; | sort -n| awk \
-		        '{printf "%4s %s\n", $$1, $$2}{s+=$$0}END{print s}'
-	@echo ''
-	@find ./tests -name '*.py' -exec  wc -l {} \; | sort -n| awk \
-        '{printf "%4s %s\n", $$1, $$2}{s+=$$0}END{print s}'
-	@echo ''
+# all: clean install test black check_code
 
-# ----------------------------------
-#      UPLOAD PACKAGE TO PYPI
-# ----------------------------------
-PYPI_USERNAME=<AUTHOR>
-build:
-	@python setup.py sdist bdist_wheel
+# count_lines:
+# 	@find ./ -name '*.py' -exec  wc -l {} \; | sort -n| awk \
+#         '{printf "%4s %s\n", $$1, $$2}{s+=$$0}END{print s}'
+# 	@echo ''
+# 	@find ./scripts -name '*-*' -exec  wc -l {} \; | sort -n| awk \
+# 		        '{printf "%4s %s\n", $$1, $$2}{s+=$$0}END{print s}'
+# 	@echo ''
+# 	@find ./tests -name '*.py' -exec  wc -l {} \; | sort -n| awk \
+#         '{printf "%4s %s\n", $$1, $$2}{s+=$$0}END{print s}'
+# 	@echo ''
 
-pypi_test:
-	@twine upload -r testpypi dist/* -u $(PYPI_USERNAME)
+# # ----------------------------------
+# #      UPLOAD PACKAGE TO PYPI
+# # ----------------------------------
+# PYPI_USERNAME=<AUTHOR>
+# build:
+# 	@python setup.py sdist bdist_wheel
 
-pypi:
-	@twine upload dist/* -u $(PYPI_USERNAME)
+# pypi_test:
+# 	@twine upload -r testpypi dist/* -u $(PYPI_USERNAME)
+
+# pypi:
+# 	@twine upload dist/* -u $(PYPI_USERNAME)
