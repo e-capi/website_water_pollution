@@ -8,6 +8,7 @@ import requests
 from settings import dict_station, prediction_list, url
 from plotting import plot_538
 import time
+from functions import collect_name_coord_station
 
 #Headers
 
@@ -52,7 +53,7 @@ if prediction_time or water_station:
         # Update the progress bar with each iteration.
         latest_iteration.text(f'{i+1}% Complete')
         bar.progress(i + 1)
-        time.sleep(0.07)
+        # time.sleep(0.03)
 
 # progress_bar = st.sidebar.progress(0)
 # status_text = st.sidebar.empty()
@@ -75,7 +76,7 @@ if prediction_time or water_station:
 
 #API response
 params = {
-    'station_id': dict_station.get(water_station),  # imported from app.py
+    'station_id': dict_station.get(water_station),  #choose key and give backs the id
     'predict_length': prediction_time,  # ""
 }
 
@@ -118,11 +119,15 @@ placeholder_time_series_plot.pyplot(
 #This could be our viz map (TBD) we would need the lat and long /// put in plotting file
 #We could also use a folium
 st.markdown("## This could be our map")
+water_station_lat = collect_name_coord_station().get(water_station)[1]
+water_station_lon = collect_name_coord_station().get(water_station)[0]
+
+
 @st.cache
 def get_map_data():
 
     return pd.DataFrame(
-            np.random.randn(1, 2) / [50, 50] + [45.7640, 4.8357],
+            np.random.randn(1, 2) / [50, 50] + [water_station_lat, water_station_lon],
             columns=['lat', 'lon']
         )
 
