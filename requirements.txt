@@ -13,3 +13,6 @@ uvicorn
 
 #API
 requests
+
+#Plotting
+matplotlib
