@@ -2,26 +2,25 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def plot_24(df, length, forecast, upper=None, lower=None):
-    length = int(length)
-    df = df['initial']
-    df = df[-24:] #Time series calculated on the last 24 months
+def plot_538(lower, upper, forecast, initial):
 
+        # We keep only 36 month of the initial series
+    initial = initial[-36:]
 
+    # We add to forecast, lower and upper the last point of initial
+    # to join the two curves
+    lower = pd.concat([initial[-1:],lower])
+    upper = pd.concat([initial[-1:],upper])
+    forecast = pd.concat([initial[-1:],forecast])
 
-    forecast = pd.concat([df[[-1]], forecast])
-    lower = pd.concat([df[[-1]], lower])
-    upper = pd.concat([df[[-1]], upper])
-    index = df.index[-(length + 2):-1] + df.index.freq * (length + 1)
+    with plt.style.context('fivethirtyeight'):
 
-    fig = plt.figure(figsize=(10, 4), dpi=100)
-    plt.plot(df, label='Last 24 months', color='black')
-    plt.plot(forecast,
-             label=f'{length} months Forecast',
-             color='orange',
-             ls='--')
-    plt.fill_between(lower.index, lower[0], upper[0], color='k', alpha=0.15) #HARD CODE [0] to be check
-    plt.title(f'Nitrate Concentration Forecast for the next {length} months')
-    plt.legend(loc='upper left', fontsize=8)
+        fig = plt.figure(figsize=(12, 5))
+        plt.plot(initial, label='Nitrates')
+        plt.plot(forecast, label='Prevision')
+        plt.fill_between(lower.index, lower, upper, color='k', alpha=.10)
 
+        plt.legend()
+        plt.ylim(bottom=-2)
+        plt.show()
     return fig

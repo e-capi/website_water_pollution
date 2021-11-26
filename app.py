@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import requests
 from settings import dict_station, prediction_list, url
-from plotting import plot_24
+from plotting import plot_538
 
 #Headers
 
@@ -35,62 +35,39 @@ params = {
     'predict_length': prediction_time,  # ""
 }
 
-response = requests.get(url, params=params).json()
-# st.write(response) # leave this here
+response = requests.get(url, params=params)
 
-#Response to DF
-df_predict = pd.DataFrame(response)
-st.write(df_predict)
+    # Dictionaries from the response
+
+response_dict = response.json()
+
+initial_dict = response_dict['initial']
+forecast_dict = response_dict['forecast']
+lower_dict = response_dict['lower']
+upper_dict = response_dict['upper']
+
+    # Pandas Series from dictionaries
+
+lower = pd.Series(lower_dict,index=lower_dict.keys())
+upper = pd.Series(upper_dict,index=upper_dict.keys())
+forecast = pd.Series(forecast_dict,index=forecast_dict.keys())
+initial = pd.Series(initial_dict,index=initial_dict.keys())
+
+    # Index convertion to timestamp
+
+lower.index = pd.to_datetime(lower.index)
+upper.index = pd.to_datetime(upper.index)
+forecast.index = pd.to_datetime(forecast.index)
+initial.index = pd.to_datetime(initial.index)
 
 #_____________________________Plotting__________________________________________
 
-forecast = pd.Series(response.get("forecast"))
-upper = pd.Series(response.get("upper"))
-lower = pd.Series(response.get("lower"))
-
-forecast = pd.DataFrame(forecast)
-upper = pd.DataFrame(upper)
-lower = pd.DataFrame(lower)
-
-
-df_predict.index = pd.to_datetime(df_predict.index)
-forecast.index = pd.to_datetime(forecast.index)
-upper.index = pd.to_datetime(upper.index) #try to put in the method (upper.index, index = index) 2d being the variable defined on the function
-lower.index = pd.to_datetime(lower.index)
-print(lower)
-
-df = df_predict.asfreq(freq = 'MS', method = 'pad')
-forecast = forecast.asfreq(freq = 'MS', method = 'pad')
-upper = upper.asfreq(freq='MS', method='pad')
-lower = lower.asfreq(freq='MS', method='pad')
-
-
-# _
-
-
-#@st.cache #TB implement
-st.pyplot(plot_24(df, prediction_time, upper, lower))
-
-
-
+#@st.cache how do we put the cache if the function is constructed in another file ?
+st.pyplot(plot_538(lower=lower, upper=upper, forecast=forecast, initial=initial))
 
 
 #_______________________________________________________________________________
 
-#Our model graph (TBD)
-st.markdown("## This could be our model :")
-@st.cache
-def prediction_model_():
-
-    return pd.DataFrame(
-            np.random.randn(20, 3),
-            columns=['Time', 'Series', 'other']
-        )
-
-df = prediction_model_()
-st.line_chart(df)
-
-#_______________________________________________________________________________
 
 #This could be our viz map (TBD) we would need the lat and long
 #We could also use a folium
