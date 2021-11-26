@@ -55,7 +55,7 @@ for i in range(100):
     # Update the progress bar with each iteration.
     latest_iteration.text(f'{i+1}% Complete')
     bar.progress(i + 1)
-    time.sleep(0.1)
+    time.sleep(0.05)
 st.success('Completed!')
 
 placeholder_time_series_plot = st.empty()
