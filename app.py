@@ -9,13 +9,24 @@ from settings import dict_station, prediction_list, url
 from plotting import plot_538
 import time
 from functions import collect_name_coord_station
+from PIL import Image
+
+#Logo
+
+lewagon = Image.open('images/lewagon.png')
+#ankorstore = Image.open('images/ankorstore.png')
+
+columns = st.columns(2)
+
+logo1 = columns[0].image(lewagon, use_column_width=False)
+#logo2 = columns[1].image(ankorstore, use_column_width=False)
 
 #Headers
 
 st.markdown("""# Water Pollution
 """)
 
-st.markdown("# A cleaver slogan?? ? :")
+st.markdown("## Slow the flow ... save the H2O")
 
 #_______________________________________________________________________________
 
@@ -36,6 +47,17 @@ col1, col2 = st.columns(2)
 
 # with col2:
 
+    # Add a placeholder
+latest_iteration = st.empty()
+bar = st.progress(0)
+
+for i in range(100):
+    # Update the progress bar with each iteration.
+    latest_iteration.text(f'{i+1}% Complete')
+    bar.progress(i + 1)
+    time.sleep(0.03)
+st.success('Completed!')
+
 placeholder_time_series_plot = st.empty()
 
 placeholder_map = st.empty()
@@ -45,15 +67,6 @@ if prediction_time or water_station:
 
     f'Calculationg the Water pollution for **{water_station.capitalize()}** in the next **{prediction_time} months ...**'
 
-    # Add a placeholder
-    latest_iteration = st.empty()
-    bar = st.progress(0)
-
-    for i in range(100):
-        # Update the progress bar with each iteration.
-        latest_iteration.text(f'{i+1}% Complete')
-        bar.progress(i + 1)
-        # time.sleep(0.03)
 
 # progress_bar = st.sidebar.progress(0)
 # status_text = st.sidebar.empty()
@@ -118,7 +131,7 @@ placeholder_time_series_plot.pyplot(
 
 #This could be our viz map (TBD) we would need the lat and long /// put in plotting file
 #We could also use a folium
-st.markdown("## This could be our map")
+st.markdown("## Water Station Location")
 water_station_lat = collect_name_coord_station().get(water_station)[1]
 water_station_lon = collect_name_coord_station().get(water_station)[0]
 
