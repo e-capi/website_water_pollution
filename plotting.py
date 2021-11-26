@@ -23,16 +23,16 @@ def plot_538(lower, upper, forecast, initial):
         for location in ['left','right','bottom','top']:
             ax.spines[location].set_visible(False)
 
-        plt.plot(initial,label='Historique')
-        plt.plot(forecast,label='Prévision du modèle')
+        plt.plot(initial,label='Data History')
+        plt.plot(forecast,label='Data Prediciton ')
         plt.fill_between(lower.index,lower,upper,color='k',alpha=.10)
 
         plt.xticks(rotation=50)
 
-        plt.title('Concentration en Nitrate (mg/L)')
+        plt.title('Nitrate Concentration (mg/L)')
         plt.legend()
         plt.ylim(bottom=-1,top=(ax.get_ylim()[1]+4))
-        plt.show()
+        # plt.show()
 
 
     return fig
