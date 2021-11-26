@@ -15,12 +15,24 @@ def plot_538(lower, upper, forecast, initial):
 
     with plt.style.context('fivethirtyeight'):
 
-        fig = plt.figure(figsize=(12, 5))
-        plt.plot(initial, label='Nitrates')
-        plt.plot(forecast, label='Prevision')
-        plt.fill_between(lower.index, lower, upper, color='k', alpha=.10)
+        fig = plt.figure(figsize=(12,5))
+        ax = plt.axes()
 
+        ax.set_facecolor("white")
+        fig.patch.set_facecolor('white')
+        for location in ['left','right','bottom','top']:
+            ax.spines[location].set_visible(False)
+
+        plt.plot(initial,label='Historique')
+        plt.plot(forecast,label='Prévision du modèle')
+        plt.fill_between(lower.index,lower,upper,color='k',alpha=.10)
+
+        plt.xticks(rotation=50)
+
+        plt.title('Concentration en Nitrate (mg/L)')
         plt.legend()
-        plt.ylim(bottom=-2)
+        plt.ylim(bottom=-1,top=(ax.get_ylim()[1]+4))
         plt.show()
+
+
     return fig
