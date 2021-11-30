@@ -8,10 +8,29 @@ import requests
 from settings import dict_station, prediction_list, url
 from plotting import plot_538
 import time
-from functions import collect_name_coord_station
+from functions import collect_name_coord_station, generate_rivers_coordinates
 from PIL import Image
+from rivers import DATA_coord
 
-#Logo
+
+import streamlit.components.v1 as components
+import pydeck as pdk
+
+icon_lewagon = Image.open('images/icon_lewagon.png')
+
+st.set_page_config(
+    layout="wide",
+    page_icon=icon_lewagon,
+    page_title= "Water Pollution",
+    initial_sidebar_state="collapsed"
+
+    )
+
+#UPPER banner
+
+
+
+#__________________________________Logo_________________________________________
 
 lewagon = Image.open('images/lewagon.png')
 #ankorstore = Image.open('images/ankorstore.png')
@@ -47,7 +66,7 @@ col1, col2 = st.columns(2)
 
 # with col2:
 
-    # Add a placeholder
+# Add a placeholder
 latest_iteration = st.empty()
 bar = st.progress(0)
 
@@ -55,7 +74,7 @@ for i in range(100):
     # Update the progress bar with each iteration.
     latest_iteration.text(f'{i+1}% Complete')
     bar.progress(i + 1)
-    time.sleep(0.05)
+    # time.sleep(0.05)
 st.success('Completed!')
 
 placeholder_time_series_plot = st.empty()
@@ -65,7 +84,7 @@ placeholder_map = st.empty()
 #Plotting with timer WTBD /!\
 if prediction_time or water_station:
 
-    f'Calculationg the Water pollution for **{water_station.capitalize()}** in the next **{prediction_time} months ...**'
+    f'Calculating the Water pollution for **{water_station.capitalize()}** in the next **{prediction_time} months ...**'
 
 
 # progress_bar = st.sidebar.progress(0)
@@ -163,5 +182,44 @@ h1 {
 
 if st.checkbox('Inject CSS'):
     st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
+
+
+#_______________________LINKS___________________________________________________
+
+DATA_coord = pd.read_csv(
+    "/home/ecapi/code/e-capi/website_water_pollution/croquis_coord/PolygonConverted.csv",
+    encoding_errors="ignore")
+
+saone_data = generate_rivers_coordinates("Sane", DATA_coord)
+
+st.dataframe(saone_data)
+
+
+def hex_to_rgb(h):
+    h = h.lstrip('#')
+    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+
+
+saone_data['color'] = saone_data['color'].apply(hex_to_rgb)
+
+
+view_state = pdk.ViewState(latitude=water_station_lat, longitude=water_station_lon, zoom=7) #map initial coords
+
+layer = pdk.Layer(type='PathLayer',
+                  data=saone_data,
+                  pickable=True,
+                  get_color='color',
+                  width_scale=20,
+                  width_min_pixels=2,
+                  get_path='path',
+                  get_width=30)
+
+r = pdk.Deck(layers=[layer],
+             initial_view_state=view_state,
+             tooltip={'text': '{name}'})
+
+st.pydeck_chart(r)
+
+
 
 #_______________________________END_____________________________________________

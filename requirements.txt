@@ -10,6 +10,7 @@ pandas
 #WEBSITE
 streamlit
 uvicorn
+hydralit
 
 #API
 requests
