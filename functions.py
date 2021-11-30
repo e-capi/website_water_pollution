@@ -24,8 +24,8 @@ def collect_name_coord_station(stations_list=stations_list):
 
 def generate_rivers_coordinates(river_name, df):
 
-    df_river = df[["name", "PointID", "Longitude", "Latitude"]]
-    df_river = df[df["name"] == str(river_name)].copy()
+    df_river = df[["label", "PointID", "Longitude", "Latitude"]]
+    df_river = df[df["label"] == str("Sane")].copy()
 
     #make a list of coordinates and put them together
     lat_list = df_river.Latitude.to_list()
@@ -35,8 +35,8 @@ def generate_rivers_coordinates(river_name, df):
 
 
     df_map = pd.DataFrame.from_dict({
-        "name": [river_name],
-        "color": ["#ed1c24"],
+        "label": [river_name],
+        "color": ["#7e8dbd"],
         "path": [coord_list]
     })
     return df_map

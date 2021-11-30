@@ -7,3 +7,4 @@ prediction_list = ["1", "3", "6", "9", "12", "24"]
 
 #API requests
 url = 'https://api-te5jtpgwkq-ew.a.run.app/predict'
+

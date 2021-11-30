@@ -10,7 +10,8 @@ from plotting import plot_538
 import time
 from functions import collect_name_coord_station, generate_rivers_coordinates
 from PIL import Image
-from rivers import DATA_coord
+
+from plotting import r
 
 
 import streamlit.components.v1 as components
@@ -155,17 +156,6 @@ water_station_lat = collect_name_coord_station().get(water_station)[1]
 water_station_lon = collect_name_coord_station().get(water_station)[0]
 
 
-@st.cache
-def get_map_data():
-
-    return pd.DataFrame(
-            np.random.randn(1, 2) / [50, 50] + [water_station_lat, water_station_lon],
-            columns=['lat', 'lon']
-        )
-
-df = get_map_data()
-st.map(df)
-
 
 #_______________________________________________________________________________
 
@@ -184,42 +174,9 @@ if st.checkbox('Inject CSS'):
     st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
 
 
-#_______________________LINKS___________________________________________________
+#__________________________MAP__________________________________________________
 
-DATA_coord = pd.read_csv(
-    "/home/ecapi/code/e-capi/website_water_pollution/croquis_coord/PolygonConverted.csv",
-    encoding_errors="ignore")
-
-saone_data = generate_rivers_coordinates("Sane", DATA_coord)
-
-st.dataframe(saone_data)
-
-
-def hex_to_rgb(h):
-    h = h.lstrip('#')
-    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
-
-
-saone_data['color'] = saone_data['color'].apply(hex_to_rgb)
-
-
-view_state = pdk.ViewState(latitude=water_station_lat, longitude=water_station_lon, zoom=7) #map initial coords
-
-layer = pdk.Layer(type='PathLayer',
-                  data=saone_data,
-                  pickable=True,
-                  get_color='color',
-                  width_scale=20,
-                  width_min_pixels=2,
-                  get_path='path',
-                  get_width=30)
-
-r = pdk.Deck(layers=[layer],
-             initial_view_state=view_state,
-             tooltip={'text': '{name}'})
 
 st.pydeck_chart(r)
-
-
 
 #_______________________________END_____________________________________________

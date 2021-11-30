@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>pydeck</title>
+        <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <script src='https://cdn.jsdelivr.net/npm/@deck.gl/jupyter-widget@~8.5.*/dist/index.js'></script>
+    <style>
+    body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#deck-map-container {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+}
+
+#map {
+  pointer-events: none;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+}
+
+#deckgl-overlay {
+  z-index: 2;
+  background: none;
+}
+
+#deck-map-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+#deck-container {
+  width: 100vw;
+  height: 100vh;
+}
+    </style>
+  </head>
+  <body>
+    <div id="deck-container">
+    </div>
+  </body>
+  <script>
+    const jsonInput = {"initialViewState": {"bearing": 0, "latitude": 37.7749295, "longitude": -122.4194155, "pitch": 0, "zoom": 10}, "layers": [{"@@type": "ScatterplotLayer", "data": [{"alt": 292, "coord": [48.090273327987276, 6.101940890815991], "label": "BELRUPT", "mean_station": 4.513698630136986, "river_id": "U---0000", "river_label": "La Sa\u00f4ne"}, {"alt": 241, "coord": [48.01825125838868, 5.941492053405311], "label": "MONTHUREUX-SUR-SAONE 2", "mean_station": 6.428571428571429, "river_id": "U---0000", "river_label": "La Sa\u00f4ne"}, {"alt": 230, "coord": [47.93638044949666, 5.923536232871648], "label": "JONVELLE", "mean_station": 9.433333333333334, "river_id": "U---0000", "river_label": "La Sa\u00f4ne"}, {"alt": 213, "coord": [47.84026083741255, 5.917378095285407], "label": "CENDRECOURT", "mean_station": 9.233333333333333, "river_id": "U---0000", "river_label": "La Sa\u00f4ne"}, {"alt": 210, "coord": [47.661731120409826, 5.972459738821173], "label": "SCEY-SUR-SAONE-ET-ST-ALBI", "mean_station": 8.421518987341772, "river_id": "U---0000", "river_label": "La Sa\u00f4ne"}, {"alt": 208, "coord": [47.69107833426886, 6.039291564176292], "label": "PORT-SUR-SAONE", "mean_station": 7.489473684210527, "river_id": "U---0000", "river_label": "La Sa\u00f4ne"}, {"alt": 190, "coord": [47.39571566626848, 5.544088676925676], "label": "APREMONT 1", "mean_station": 10.553020134228188, "river_id": "U---0000", "river_label": "La Sa\u00f4ne"}, {"alt": 185, "coord": [47.194519280308995, 5.382571963766932], "label": "AUXONNE 1", "mean_station": 10.828666666666667, "river_id": "U---0000", "river_label": "La Sa\u00f4ne"}, {"alt": 180, "coord": [47.07369860831355, 5.165636185828038], "label": "CHARREY-SUR-SAONE", "mean_station": 10.831410256410257, "river_id": "U---0000", "river_label": "La Sa\u00f4ne"}, {"alt": 179, "coord": [46.996924100012116, 5.143535237908081], "label": "SEURRE", "mean_station": 10.799342105263158, "river_id": "U---0000", "river_label": "La Sa\u00f4ne"}, {"alt": 175, "coord": [46.71096442849778, 4.932135858552662], "label": "OUROUX-SUR-SAONE", "mean_station": 8.546308724832215, "river_id": "U---0000", "river_label": "La Sa\u00f4ne"}, {"alt": 173, "coord": [46.878985499448895, 4.95545758641089], "label": "GERGY", "mean_station": 8.671333333333333, "river_id": "U---0000", "river_label": "La Sa\u00f4ne"}, {"alt": 170, "coord": [45.94411368108925, 4.728940625602998], "label": "ST-BERNARD", "mean_station": 8.767105263157895, "river_id": "U---0000", "river_label": "La Sa\u00f4ne"}, {"alt": 170, "coord": [46.44779717625807, 4.896612600024577], "label": "FLEURVILLE", "mean_station": 8.577181208053691, "river_id": "U---0000", "river_label": "La Sa\u00f4ne"}, {"alt": 168, "coord": [46.18787308946925, 4.780200879945488], "label": "ST-SYMPHORIEN-D'ANCELLES", "mean_station": 8.46887417218543, "river_id": "U---0000", "river_label": "La Sa\u00f4ne"}, {"alt": 164, "coord": [45.79653877103179, 4.831905651439411], "label": "LYON 1", "mean_station": 8.835947712418301, "river_id": "U---0000", "river_label": "La Sa\u00f4ne"}], "filled": true, "getFillColor": [255, 140, 0], "getLineColor": [0, 0, 0], "getPosition": "@@=coordinates", "id": "969344c3-472a-448d-b297-26835b7003cf", "lineWidthMinPixels": 1, "opacity": 0.8, "pickable": true, "radiusMaxPixels": 100, "radiusMinPixels": 1, "radiusScale": 6, "stroked": true}], "mapProvider": "carto", "mapStyle": "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json", "mapboxKey": "", "views": [{"@@type": "MapView", "controller": true}]};
+    const tooltip = {'text': '{name}\n{address}'};
+    const customLibraries = null;
+
+    const deckInstance = createDeck({
+                  container: document.getElementById('deck-container'),
+      jsonInput,
+      tooltip,
+      customLibraries
+    });
+
+  </script>
+</html>
