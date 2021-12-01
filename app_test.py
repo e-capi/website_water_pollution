@@ -118,8 +118,6 @@ id_station = give_id_from_station_name_2(dict_station_2, water_station)
 
 
 
-
-
 #__________________________MAP__________________________________________________
 with st.container():
     with st.expander("Map Visualization: "):
