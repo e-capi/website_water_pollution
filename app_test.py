@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import requests
 from settings import prediction_list, url
-from plotting import map_plot
+from plotting import map_plot, model_plot
 import time
 from functions import *
 from PIL import Image
@@ -109,10 +109,11 @@ response_dict = response.json()
 
 
 
-
 #_____________________________Plotting__________________________________________
 
+placeholder_time_series_plot = st.empty()
 
+placeholder_time_series_plot.pyplot(model_plot(id_station, water_station, response_dict))
 
 
 

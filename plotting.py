@@ -5,7 +5,53 @@ from functions import generate_rivers_coordinates
 from rivers import DATA_coord
 import pydeck as pdk
 import streamlit as st
+from matplotlib import pyplot as plt
+import matplotlib.dates as mdates
+from datetime import date, datetime
 
+# import requests
+
+def model_plot(id_station, water_station,json_response):
+    #Convert the response to a DF
+    preddf = pd.DataFrame(json_response)
+    preddf.date = pd.to_datetime(preddf.date)
+    preddf.set_index('date', inplace=True)
+
+    # Today date
+    today = date.today()
+
+    #Info station
+    station_name = water_station
+
+    # Info Model error
+    rmse = 2.19
+
+    #Plot
+    with plt.style.context('fivethirtyeight'):
+
+        fig = plt.figure(figsize=(12,5))
+        ax = plt.gca()
+
+        plt.title(f'{station_name} : Nitrate concentration prediction')
+        plt.plot(preddf.index,preddf.prediction)
+
+        # Plots the rmse delta
+        plt.fill_between(preddf.index,
+                        preddf.prediction - rmse,
+                        preddf.prediction + rmse,
+                        color='k',alpha=.10)
+
+        # Plots the today line
+        ax.axvline(x=today, ymin=0., ymax=1, c='red', alpha=0.4, linewidth=2)
+
+
+
+        plt.xticks(rotation=50)
+
+        plt.ylim(bottom=-1)
+        # plt.show()
+    return fig
+# ____________________________________________________________________
 def plot_538(lower, upper, forecast, initial):
 
     # We keep only 36 month of the initial series
