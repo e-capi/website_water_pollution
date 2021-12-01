@@ -71,7 +71,7 @@ def model_plot(id_station, water_station, json_response):
 
 
 #prepare the River path data
-def map_plot(water_station_lat, water_station_lon):
+def map_plot(water_station_lat, water_station_lon, water_station):
     DATA_coord = pd.read_csv(
         "/home/ecapi/code/e-capi/website_water_pollution/croquis_coord/PolygonConverted.csv",
         encoding_errors="ignore")
@@ -106,6 +106,7 @@ def map_plot(water_station_lat, water_station_lon):
     df_station["coord"] = df_station["coord"].apply(lambda x: (x[1], x[0]))
     df_station["mean_station_radius"] = df_station["mean_station"] * 80
 
+    df_station_chosen_station = df_station[df_station["label"] == water_station] #to put the water station
     layer_2 = pdk.Layer(
         "ScatterplotLayer",
         df_station,
@@ -123,7 +124,25 @@ def map_plot(water_station_lat, water_station_lon):
         get_line_color=[0, 0, 0],
     )
 
-    r = pdk.Deck(layers=[layer_2, layer],
+    layer_3 = pdk.Layer(
+        "ScatterplotLayer",
+        df_station_chosen_station,
+        pickable=True,
+        opacity=0.8,
+        stroked=True,
+        filled=True,
+        radius_scale=6,
+        radius_min_pixels=1,
+        radius_max_pixels=10,
+        line_width_min_pixels=1,
+        get_position="coord",
+        get_radius="mean_station_radius",
+        get_fill_color=[10, 188, 22],
+        get_line_color=[0, 0, 0],
+    )
+
+
+    r = pdk.Deck(layers=[layer_2 ,layer_3, layer],
                 initial_view_state=view_state,
                 tooltip={'text': '{label}\n{mean_station}'}, #put the prediction instead of the moyen
                 map_style="road")

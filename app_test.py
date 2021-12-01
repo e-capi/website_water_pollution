@@ -90,24 +90,26 @@ with st.container():
 
 id_station = give_id_from_station_name_2(dict_station_2, water_station)
 
-params = {
-    'station_id': id_station,  #choose key and give backs the id
-    # 'predict_length': prediction_time,
-}
+#NOT WORKING RN
+# params = {
+#     'station_id': id_station,  #choose key and give backs the id
+#     # 'predict_length': prediction_time,
+# }
 
-# st.write(dict_station.get(water_station))
-response = requests.get(url, params=params)
+# # st.write(dict_station.get(water_station))
+# response = requests.get(url, params=params)
 
 
-# Dictionaries from the response
-response_dict = response.json()
+# # Dictionaries from the response
+# response_dict = response.json()
 
 
 
 #_____________________________Plotting__________________________________________
 
 
-placeholder_model_plot.pyplot(model_plot(id_station, water_station, response_dict))
+#NOT WORKING RN
+# placeholder_model_plot.pyplot(model_plot(id_station, water_station, response_dict))
 
 
 
@@ -128,7 +130,7 @@ with st.container():
         water_station_lat = dict_station_2.get(id_station).get("coord")[0]
         water_station_lon = dict_station_2.get(id_station).get("coord")[1]
 
-        st.pydeck_chart(map_plot(water_station_lat, water_station_lon))
+        st.pydeck_chart(map_plot(water_station_lat, water_station_lon, water_station))
 
 #_______________________________________________________________________________
 
