@@ -42,6 +42,7 @@ st.markdown("## Slow the flow ... save the H2O")
 
 #Request info from the user
 
+
 with st.sidebar:
 
     water_station = st.selectbox("Select you water station to analyze",
@@ -62,7 +63,7 @@ for i in range(100):
     # Update the progress bar with each iteration.
     latest_iteration.text(f'{i+1}% Complete')
     bar.progress(i + 1)
-    time.sleep(0.05)
+    # time.sleep(0.05)
 st.success('Completed!')
 
 # placeholder_time_series_plot = st.empty()
@@ -106,12 +107,22 @@ response = requests.get(url, params=params)
 # Dictionaries from the response
 response_dict = response.json()
 
+
+
 #_____________________________Plotting__________________________________________
 
 placeholder_time_series_plot = st.empty()
 
-placeholder_time_series_plot.pyplot(
-    model_plot(id_station, water_station, response_dict))
+placeholder_time_series_plot.pyplot(model_plot(id_station, water_station, response_dict))
+
+
+
+
+
+
+
+
+
 
 #__________________________MAP__________________________________________________
 #Lat and Long with the api
