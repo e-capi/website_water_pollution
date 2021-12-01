@@ -1,12 +1,14 @@
 import requests
 import pandas as pd
 #beta
-url2 = 'https://api-te5jtpgwkq-ew.a.run.app/stations'
-
+url2 = 'https://api-te5jtpgwkq-ew.a.run.app/stations' #fichier local
 response = requests.get(url2)
 stations_list = response.json()
 
-
+url_local = "/home/ecapi/code/e-capi/website_water_pollution/croquis_coord/stationsdf.pickle"
+df_station = pd.read_pickle("/home/ecapi/code/e-capi/website_water_pollution/croquis_coord/stationsdf.pickle")
+dict_station_2 = df_station.to_dict(orient="index")
+# ____________________________________
 #Collect the label and id from our list of dict stations
 def collect_name_id_station(stations_list=stations_list):
     water_stations_id = {}
@@ -20,6 +22,24 @@ def collect_name_coord_station(stations_list=stations_list):
     for station in stations_list:
         water_stations_coord[station["label"]] = station["coord"]
     return water_stations_coord
+#___________________________________
+
+def collect_name_station_2(dict_satation_2 = dict_station_2):
+    return [dict_station_2.get(x).get("label") for x in dict_station_2]
+
+def give_id_from_station_name_2(dict_station_2, water_station):
+    for id in dict_station_2:
+        if dict_station_2.get(id).get("label") == water_station:
+            return id
+
+
+def collect_coord_station_2(dict_satation=dict_station_2):
+    return [dict_station_2.get(x).get("coord") for x in dict_station_2]
+
+
+#__________________________________
+
+#__________________________________
 
 
 def generate_rivers_coordinates(river_name, df):
@@ -40,3 +60,8 @@ def generate_rivers_coordinates(river_name, df):
         "path": [coord_list]
     })
     return df_map
+
+
+def create_a_dict_from_df(df):
+    dictionary = df.to_dict(orient="index")
+    return dictionary

@@ -6,22 +6,19 @@ import numpy as np
 import pandas as pd
 import requests
 from settings import dict_station, prediction_list, url
-from plotting import plot_538
+from plotting import plot_538, r
 import time
-from functions import collect_name_coord_station, generate_rivers_coordinates
+from functions import *
 from PIL import Image
 
-from plotting import r
 
 
 import streamlit.components.v1 as components
 import pydeck as pdk
 
-icon_lewagon = Image.open('images/icon_lewagon.png')
-
 st.set_page_config(
     layout="wide",
-    page_icon=icon_lewagon,
+    page_icon=Image.open('images/icon_lewagon.png'),
     page_title= "Water Pollution",
     initial_sidebar_state="collapsed"
 
@@ -52,13 +49,21 @@ st.markdown("## Slow the flow ... save the H2O")
 
 #Request info from the user
 
+# with st.sidebar:
+
+#     water_station = st.selectbox(
+#         "Select you water station to analyze",
+#         list(dict_station.keys()))  #dict_statio.keys
+
+#     prediction_time = st.selectbox("Select the amount of months to predict",(prediction_list))
+
 with st.sidebar:
 
-    water_station = st.selectbox(
-        "Select you water station to analyze",
-        list(dict_station.keys()))  #dict_statio.keys
+    water_station = st.selectbox("Select you water station to analyze",
+                                 collect_name_station_2())  #dict_statio.keys
 
-    prediction_time = st.selectbox("Select the amount of months to predict",(prediction_list))
+    prediction_time = st.selectbox("Select the amount of months to predict",
+                                   (prediction_list))
 
 
 
@@ -108,11 +113,18 @@ if prediction_time or water_station:
 #_______________________________________________________________________________
 
 #API response
+# params = {
+#     'station_id': dict_station.get(water_station),  #choose key and give backs the id
+#     'predict_length': prediction_time,  # ""
+# }
+id_station = give_id_from_station_name_2(dict_station_2, water_station)
+
 params = {
-    'station_id': dict_station.get(water_station),  #choose key and give backs the id
-    'predict_length': prediction_time,  # ""
+    'station_id': id_station,  #choose key and give backs the id
+    'predict_length': prediction_time,  #
 }
 
+# st.write(dict_station.get(water_station))
 response = requests.get(url, params=params)
 
 # Dictionaries from the response
@@ -150,10 +162,15 @@ placeholder_time_series_plot.pyplot(
 
 
 #This could be our viz map (TBD) we would need the lat and long /// put in plotting file
-#We could also use a folium
+
+#Lat and Long with the api
 st.markdown("## Water Station Location")
-water_station_lat = collect_name_coord_station().get(water_station)[1]
-water_station_lon = collect_name_coord_station().get(water_station)[0]
+
+# water_station_lat = collect_name_coord_station().get(water_station)[1]
+# water_station_lon = collect_name_coord_station().get(water_station)[0]
+
+water_station_lat = dict_station_2.get(id_station).get("coord")[1]
+water_station_lon = dict_station_2.get(id_station).get("coord")[0]
 
 
 
