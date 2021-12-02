@@ -5,8 +5,8 @@ url2 = 'https://api-te5jtpgwkq-ew.a.run.app/stations' #fichier local
 response = requests.get(url2)
 stations_list = response.json()
 
-url_local = "/home/ecapi/code/e-capi/website_water_pollution/croquis_coord/stationsdf.pickle"
-df_station = pd.read_pickle("/home/ecapi/code/e-capi/website_water_pollution/croquis_coord/stationsdf.pickle")
+url_local = "croquis_coord/stationsdf.pickle"
+df_station = pd.read_pickle("croquis_coord/stationsdf.pickle")
 dict_station_2 = df_station.to_dict(orient="index")
 # ____________________________________
 #Collect the label and id from our list of dict stations
