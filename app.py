@@ -18,7 +18,8 @@ import pydeck as pdk
 st.set_page_config(layout="wide",
                    page_icon=Image.open('images/icon_lewagon.png'),
                    page_title="Water Pollution",
-                   initial_sidebar_state="collapsed")
+                   initial_sidebar_state="collapsed",
+                   )
 
 CSS = """
 .stApp {
@@ -77,6 +78,7 @@ with st.container():
         latest_iteration = st.empty()
         bar = st.progress(0)
 
+        time.sleep(.55)
         for i in range(100):
             # Update the progress bar with each iteration.
             latest_iteration.text(f'{i+1}% Complete')
