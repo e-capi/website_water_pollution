@@ -60,7 +60,7 @@ water_logo = Image.open('images/logo_100x.jpg')
 #Headers
 columns = st.columns(3)
 columns[0].image(water_logo, use_column_width=False)
-columns[1].markdown(""" # Predict Water Pollution
+columns[1].markdown(""" # Water Pollution Predictor
 """)
 logo1 = columns[2].image(lewagon, use_column_width=False)
 
@@ -83,7 +83,7 @@ with st.container():
             # Update the progress bar with each iteration.
             latest_iteration.text(f'{i+1}% Complete')
             bar.progress(i + 1)
-            time.sleep(.03)
+            time.sleep(.003)
         # st.success('Completed!')
 
         #text below plot
@@ -165,8 +165,9 @@ st.success('Prediction Successful !')
 
 #__________________socials_________________________
 
-# st.markdown(
-#     "![GitHub Repo stars](https://img.shields.io/github/stars/e-capi/website_water_pollution?label=water_Pollution&style=social)"
-# )
+st.write("""<a href='https://github.com/sebvey/water_pollution' target='_blank'>
+         <img src='https://img.shields.io/github/stars/e-capi/website_water_pollution?label=water_Pollution&style=social'/>
+         </a>""", unsafe_allow_html=True)
+
 
 #_______________________________END_____________________________________________

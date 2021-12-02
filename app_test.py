@@ -186,9 +186,9 @@ st.success('Prediction Successful !')
 
 
 
-# st.markdown(
-#     "![GitHub Repo stars](https://img.shields.io/github/stars/e-capi/website_water_pollution?label=water_Pollution&style=social)"
-# )
+st.markdown(
+    "![GitHub Repo stars][(https://img.shields.io/github/stars/e-capi/website_water_pollution?label=water_Pollution&style=social)]"
+)
 
 
 
