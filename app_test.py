@@ -14,6 +14,7 @@ from PIL import Image
 import streamlit.components.v1 as components
 import pydeck as pdk
 
+#CSS SETUP
 st.set_page_config(layout="wide",
                    page_icon=Image.open('images/icon_lewagon.png'),
                    page_title="Water Pollution",
@@ -49,41 +50,35 @@ h2 {
 """
 st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
 
-#UPPER banner
 
 #__________________________________Logo_________________________________________
 
-lewagon = Image.open('images/lewagon.png')
+lewagon = Image.open('images/lewagon_600x.png')
+water_logo = Image.open('images/logo_100x.jpg')
 # water_wave = Image.open('images/water-wave_1f30a.png')
 
-columns = st.columns(2)
-
-logo1 = columns[0].image(lewagon, use_column_width=False)
-# logo2 = columns[1].image(water_wave, use_column_width=False)
-# water_wave = columns[1].markdown(
-#     "![Water_wave](https://emojipedia-us.s3.amazonaws.com/source/skype/289/water-wave_1f30a.png)"
-# )
 
 #Headers
-st.title(
-    """ Water Pollution
+columns = st.columns(3)
+columns[0].image(water_logo, use_column_width=False)
+columns[1].markdown(""" # Predict Water Pollution
 """)
+logo1 = columns[2].image(lewagon, use_column_width=False)
 
-st.markdown("## Slow the flow ... save the H2O ")
+
+# st.markdown("## Slow the flow ... save the H2O ")
 
 #_______________________________________________________________________________
 
 
 with st.container():
-    water_station = st.selectbox("Select you water station to analyze",
+    col_pred = st.columns((3,12))
+    col_pred[0].markdown("### Select a water station to analyse: ")
+    water_station = col_pred[1].selectbox("",
                                 collect_name_station_2())  #dict_statio.keys
-    # with col2:
-    predict_button = st.button("💧 Predict ")
-    #     prediction_time = st.selectbox(
-    #         "Select the amount of months to predict", (prediction_list))
-    #Container model plot
 
-    if predict_button:
+
+    if water_station:
         latest_iteration = st.empty()
         bar = st.progress(0)
 
@@ -91,28 +86,46 @@ with st.container():
             # Update the progress bar with each iteration.
             latest_iteration.text(f'{i+1}% Complete')
             bar.progress(i + 1)
-            time.sleep(0.05)
-        st.success('Completed!')
-
+            time.sleep(.03)
+        # st.success('Completed!')
 
         #text below plot
-    if predict_button or water_station:
-        f'Calculating the Water pollution for **{water_station.capitalize()}**' #in the next **{prediction_time} months ...**'
+    # if water_station:
+    #     f'Calculating the Water pollution for **{water_station.capitalize()}**' #in the next **{prediction_time} months ...**'
+
+    # predict_button = st.button("💧 Predict ")
 
 
-cont_col1, cont_col2 = st.columns(2)
+    # if predict_button:
+    #     latest_iteration = st.empty()
+    #     bar = st.progress(0)
+
+    #     for i in range(100):
+    #         # Update the progress bar with each iteration.
+    #         latest_iteration.text(f'{i+1}% Complete')
+    #         bar.progress(i + 1)
+    #         time.sleep(0.05)
+    #     st.success('Completed!')
+
+    #     #text below plot
+    # if predict_button or water_station:
+    #     f'Calculating the Water pollution for **{water_station.capitalize()}**' #in the next **{prediction_time} months ...**'
+
+
+cont_col1, cont_col2 = st.columns((3,2))
+
 
 with cont_col1:
 
     with st.container():
         #Options boxes
-        with st.expander("Choose your station: "):
+        with st.expander("Prediction Model: ", expanded=True):
             # col1, col2 = st.columns(2)
             # with col1:
 
 
             #model
-            st.markdown("## Prediction Model")
+            # st.markdown("## Prediction Model:")
             placeholder_model_plot = st.empty()
 
             #progression bar
@@ -150,21 +163,13 @@ response_dict = response.json()
 
 #_____________________________Plotting__________________________________________
 
-
-#NOT WORKING RN
 placeholder_model_plot.pyplot(model_plot(id_station, water_station, response_dict))
-
-
-
-
-
-
 
 
 #__________________________MAP__________________________________________________
 with cont_col2:
     with st.container():
-        with st.expander("Map Visualization: "):
+        with st.expander("Map Visualization: ", expanded=True):
 
             #Lat and Long with the api
             st.markdown("## Water Station Location")
@@ -174,18 +179,16 @@ with cont_col2:
 
             st.pydeck_chart(map_plot(water_station_lat, water_station_lon, water_station))
 
-
-
-
+st.success('Prediction Successful !')
 
 
 #__________________socials_________________________
 
 
 
-st.markdown(
-    "![GitHub Repo stars](https://img.shields.io/github/stars/e-capi/website_water_pollution?label=water_Pollution&style=social)"
-)
+# st.markdown(
+#     "![GitHub Repo stars](https://img.shields.io/github/stars/e-capi/website_water_pollution?label=water_Pollution&style=social)"
+# )
 
 
 
