@@ -58,6 +58,12 @@ def model_plot(id_station, water_station, json_response):
                 color='red',
                 rotation=90)  # center
 
+        # Background color
+        fig.patch.set_facecolor('white')  # Figure Background
+        ax.set_facecolor('white')  # Axe Background
+        for location in ['left', 'right', 'bottom', 'top']:  # Disable spines
+            ax.spines[location].set_visible(False)
+
         plt.xticks(rotation=25)
 
         plt.ylim(bottom=-1)
