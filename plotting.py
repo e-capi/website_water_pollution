@@ -29,7 +29,7 @@ def model_plot(id_station, water_station, json_response):
     #Plot
     with plt.style.context('fivethirtyeight'):
 
-        fig = plt.figure(figsize=(12, 5))
+        fig = plt.figure(figsize=(12, 5.3))
         ax = plt.gca()
 
         # Date Format
@@ -94,7 +94,7 @@ def map_plot(water_station_lat, water_station_lon, water_station):
 
 
     view_state = pdk.ViewState(latitude=water_station_lat, longitude=water_station_lon,
-                            zoom=12)  #initial map point of view
+                            zoom=8)  #initial map point of view
 
     layer = pdk.Layer(type='PathLayer',
                     data=saone_data_path,
@@ -103,14 +103,14 @@ def map_plot(water_station_lat, water_station_lon, water_station):
                     width_scale=20,
                     width_min_pixels=2,
                     get_path='path',
-                    get_width=10)
+                    get_width=30)
 
     #prepare the stations data
     df_station = pd.read_pickle(
         "croquis_coord/stationsdf.pickle"
     )
     df_station["coord"] = df_station["coord"].apply(lambda x: (x[1], x[0]))
-    df_station["mean_station_radius"] = df_station["mean_station"] * 80
+    df_station["mean_station_radius"] = df_station["mean_station"] * 120
 
     df_station_chosen_station = df_station[df_station["label"] == water_station] #to put the water station
     layer_2 = pdk.Layer(
@@ -126,8 +126,8 @@ def map_plot(water_station_lat, water_station_lon, water_station):
         line_width_min_pixels=1,
         get_position="coord",
         get_radius="mean_station_radius",
-        get_fill_color=[255, 140, 0],
-        get_line_color=[0, 0, 0],
+        get_fill_color=[64, 64, 64],
+        get_line_color=[30, 30, 30],
     )
 
     layer_3 = pdk.Layer(
@@ -143,15 +143,17 @@ def map_plot(water_station_lat, water_station_lon, water_station):
         line_width_min_pixels=1,
         get_position="coord",
         get_radius="mean_station_radius",
-        get_fill_color=[10, 188, 22],
-        get_line_color=[0, 0, 0],
+        get_fill_color=[45, 131, 39],
+        get_line_color=[69, 192, 60],
     )
 
 
-    r = pdk.Deck(layers=[layer_2 ,layer_3, layer],
-                initial_view_state=view_state,
-                tooltip={'text': '{label}\n{mean_station}'}, #put the prediction instead of the moyen
-                map_style="road")
+    r = pdk.Deck(
+        layers=[layer, layer_2, layer_3],
+        initial_view_state=view_state,
+        tooltip={'text': '{label}\n{mean_station}'
+                 },  #put the prediction instead of the moyen
+        map_style="road")
 
     return r
 # ____________________________________________________________________
