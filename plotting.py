@@ -79,7 +79,7 @@ def model_plot(id_station, water_station, json_response):
 #prepare the River path data
 def map_plot(water_station_lat, water_station_lon, water_station):
     DATA_coord = pd.read_csv(
-        "/home/ecapi/code/e-capi/website_water_pollution/croquis_coord/PolygonConverted.csv",
+        "croquis_coord/PolygonConverted.csv",
         encoding_errors="ignore")
 
     saone_data_path = generate_rivers_coordinates("Saône", DATA_coord)
@@ -108,7 +108,7 @@ def map_plot(water_station_lat, water_station_lon, water_station):
 
     #prepare the stations data
     df_station = pd.read_pickle(
-        "/home/ecapi/code/e-capi/website_water_pollution/croquis_coord/stationsdf.pickle"
+        "croquis_coord/stationsdf.pickle"
     )
     df_station["coord"] = df_station["coord"].apply(lambda x: (x[1], x[0]))
     df_station["mean_station_radius"] = df_station["mean_station"] * 80
