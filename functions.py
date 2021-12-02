@@ -65,3 +65,8 @@ def generate_rivers_coordinates(river_name, df):
 def create_a_dict_from_df(df):
     dictionary = df.to_dict(orient="index")
     return dictionary
+
+
+def generate_saone_coordinates():
+
+    return pd.read_pickle('croquis_coord/saone_trace.pickle')

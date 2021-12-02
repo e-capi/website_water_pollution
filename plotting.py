@@ -2,7 +2,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import pandas as pd
-from functions import generate_rivers_coordinates
+from functions import *
 from rivers import DATA_coord
 import pydeck as pdk
 import streamlit as st
@@ -83,6 +83,7 @@ def map_plot(water_station_lat, water_station_lon, water_station):
         encoding_errors="ignore")
 
     saone_data_path = generate_rivers_coordinates("Saône", DATA_coord)
+    # saone_data_path = generate_saone_coordinates()
 
 
     def hex_to_rgb(h):
