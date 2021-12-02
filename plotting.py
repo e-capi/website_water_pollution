@@ -82,9 +82,8 @@ def map_plot(water_station_lat, water_station_lon, water_station):
         "croquis_coord/PolygonConverted.csv",
         encoding_errors="ignore")
 
-    saone_data_path = generate_rivers_coordinates("Saône", DATA_coord)
-    # saone_data_path = generate_saone_coordinates()
-
+    #saone_data_path = generate_rivers_coordinates("Saône", DATA_coord)
+    saone_data_path = generate_saone_coordinates()
 
     def hex_to_rgb(h):
         h = h.lstrip('#')
